@@ -1,0 +1,113 @@
+@charset "utf-8";
+body,
+article,
+header,
+nav,
+section,
+aside,
+footer,
+ul,
+ol,
+li,
+div,
+p,
+a,
+i,
+span {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: #999;
+    font-size: 1.4rem;
+    font-family: "arial", "微软雅黑"
+}
+
+button {
+    border: none;
+}
+
+html {
+    font-size: 62.5%;
+    -webkit-font-smoothing: antialiased;
+    -webkit-overflow-scrolling: touch;
+    -moz-overflow-scrolling: touch;
+    -o-overflow-scrolling: touch;
+}
+
+body {
+    color: #535353;
+    font-size: 1.4rem;
+    font-family: "arial", "微软雅黑";
+    background: #fff;
+}
+
+a,
+body {
+    font-family: "微软雅黑";
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+}
+
+img {
+    border: 0;
+    vertical-align: middle;
+}
+
+ol,
+ul,
+li {
+    list-style: none
+}
+
+dl,
+dt,
+dd,
+ul,
+li {
+    margin: 0;
+    padding: 0
+}
+
+input,
+textarea {
+    outline: none
+}
+
+html,
+body,
+form,
+fieldset,
+p,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    -webkit-text-size-adjust: none;
+    margin: 0;
+}
+
+i {
+    font-style: normal
+}
+
+input,
+textarea,
+select {
+    outline: none;
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px #FBF2E3 inset !important;
+    -webkit-box-shadow: 0 0 0px 1000px #FBF2E3 inset !important;
+    -webkit-text-fill-color: #E07610;
+}
