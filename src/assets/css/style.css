@@ -1,113 +1,121 @@
-@charset "utf-8";
-body,
-article,
-header,
-nav,
-section,
-aside,
-footer,
-ul,
-ol,
-li,
-div,
-p,
-a,
-i,
-span {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-}
-
-a {
-    text-decoration: none;
-    color: #999;
-    font-size: 1.4rem;
-    font-family: "arial", "微软雅黑"
-}
-
-button {
-    border: none;
-}
-
 html {
+    color: #000;
+    background: #FFF;
     font-size: 62.5%;
-    -webkit-font-smoothing: antialiased;
-    -webkit-overflow-scrolling: touch;
-    -moz-overflow-scrolling: touch;
-    -o-overflow-scrolling: touch;
+    height: 100%;
 }
 
 body {
-    color: #535353;
     font-size: 1.4rem;
-    font-family: "arial", "微软雅黑";
-    background: #fff;
-}
-
-a,
-body {
+    height: 100%;
     font-family: "微软雅黑";
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 }
 
-img {
-    border: 0;
-    vertical-align: middle;
-}
-
-ol,
-ul,
-li {
-    list-style: none
-}
-
+body,
+div,
 dl,
 dt,
 dd,
 ul,
-li {
-    margin: 0;
-    padding: 0
-}
-
-input,
-textarea {
-    outline: none
-}
-
-html,
-body,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
 form,
 fieldset,
+input,
+textarea,
 p,
-div,
+blockquote,
+th,
+td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset,
+img {
+    border: 0;
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+caption,
+th {
+    text-align: left;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    -webkit-text-size-adjust: none;
-    margin: 0;
+    font-size: 100%;
+    font-weight: normal;
 }
 
-i {
-    font-style: normal
+q:before,
+q:after {
+    content: '';
 }
 
-input,
-textarea,
-select {
-    outline: none;
+abbr,
+acronym {
+    border: 0;
 }
 
-input:-webkit-autofill,
-textarea:-webkit-autofill,
-select:-webkit-autofill {
-    box-shadow: 0 0 0px 1000px #FBF2E3 inset !important;
-    -webkit-box-shadow: 0 0 0px 1000px #FBF2E3 inset !important;
-    -webkit-text-fill-color: #E07610;
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* custom */
+
+.main {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* animation */
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s
+}
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active in below version 2.1.8 */
+
+{
+    opacity: 0
 }

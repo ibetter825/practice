@@ -1,16 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>练习题库</title>
-    <link href="http://at.alicdn.com/t/font_487106_qtdo6lwo20oa8aor.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/layer/3.1.0/mobile/need/layer.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-</head>
+<template>
+    <div class="main detail">
+        <header class="header">
+        <ul>
+            <li><router-link :to="{path: '/'}"><i class="iconfont icon-arrow-left"></i></router-link></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </header>
+    <section class="content">
+        <section>
+            <header><span class="type">单选题</span>机动车驾驶人违法驾驶造成重大交通事故构成犯罪的，依法追究什么责任？</header>
+            <ul>
+                <li><i class="iconfont icon-default"></i>你在他乡还好吗，我在他乡很好很不好，我在他乡很好很不好,非常的不好</li>
+                <li><i class="iconfont icon-right"></i></li>
+                <li><i class="iconfont icon-wrong"></i></li>
+            </ul>
+        </section>
+    </section>
+    <footer class="footer">
+        <ul>
+            <li class="collect"><i class="iconfont icon-collect"></i>&nbsp;收藏</li>
+            <li class="pager"><i class="iconfont icon-shuru"></i><span>2/2038</span></li>
+            <li class="count">
+                <span><i class="iconfont icon-right"></i><i>1</i></span>
+                <span><i class="iconfont icon-wrong"></i><i>1</i></span>
+            </li>
+        </ul>
+    </footer>
+    </div>
+</template>
+<script>
+    module.exports = {
+        data() {
+            return {
+                dao: this.$indexedDB('practiceDb', 1)//链接数据库
+            }
+        }
+    }
+</script>
 <style>
-    .header {
+.header {
         width: 100%;
         height: 50px;
         text-align: center;
@@ -158,39 +187,3 @@
         margin-right: 6px;
     }
 </style>
-
-<body class="detail">
-    <header class="header">
-        <ul>
-            <li><i class="iconfont icon-arrow-left"></i></li>
-            <li></li>
-            <li></li>
-        </ul>
-    </header>
-    <section class="content">
-        <section>
-            <header><span class="type">单选题</span>机动车驾驶人违法驾驶造成重大交通事故构成犯罪的，依法追究什么责任？</header>
-            <ul>
-                <li><i class="iconfont icon-default"></i>你在他乡还好吗，我在他乡很好很不好，我在他乡很好很不好,非常的不好</li>
-                <li><i class="iconfont icon-right"></i></li>
-                <li><i class="iconfont icon-wrong"></i></li>
-            </ul>
-        </section>
-    </section>
-    <footer class="footer">
-        <ul>
-            <li class="collect"><i class="iconfont icon-collect"></i>&nbsp;收藏</li>
-            <li class="pager"><i class="iconfont icon-shuru"></i><span>2/2038</span></li>
-            <li class="count">
-                <span><i class="iconfont icon-right"></i><i>1</i></span>
-                <span><i class="iconfont icon-wrong"></i><i>1</i></span>
-            </li>
-        </ul>
-    </footer>
-</body>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/layer/3.1.0/mobile/layer.js"></script>
-<script>
-</script>
-
-</html>

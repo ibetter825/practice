@@ -2,10 +2,14 @@ import Vue from 'vue'
 // 引用路由
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
+import VueResource from 'vue-resource'
+Vue.use(VueResource)
     //入口
 import App from './App.vue'
 // 引用路由配置文件
 import routes from './config/routes'
+// 引用常量
+import constant from './local/constant'
 // 引用自定义存储方法文件
 import storage from './local/storage'
 // 将storage方法绑定到全局 使用方法为在vue实例中调用 eg: this.$localStorage()

@@ -2,10 +2,16 @@
 let index = function(resolve) {
     require(['../page/index.vue'], resolve)
 }
-
-// 配置路由
+let detail = function(resolve) {
+        require(['../page/detail.vue'], resolve)
+    }
+    // 配置路由
 export default [{
     path: '/',
     component: index,
     name: 'index'
+}, {
+    path: '/detail',
+    component: detail,
+    name: 'detail'
 }]

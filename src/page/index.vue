@@ -1,9 +1,7 @@
 <template>
-    <div class="logo">
-        <button v-on:click="connect">连接数据库</button>
-        <button v-on:click="addTable">创建表</button>
-        <button v-on:click="add">添加一条数据</button>
-         <button v-on:click="get">获取一条数据</button>
+    <div class="main index">
+        <section class="banner"></section>
+        <section class="enter"><router-link :to="{path: '/detail'}">立即进入</router-link></section>
     </div>
 </template>
 <script>
@@ -12,36 +10,30 @@
             return {
                 dao: this.$indexedDB('practiceDb', 1)//链接数据库
             }
-        },
-        methods: {
-            connect: function (event) {
-                this.dao = this.$indexedDB('practiceDb', 1);
-                console.log(this.dao);
-            },
-            addTable: function(){
-                console.log(this.dao);
-                this.dao.open('practice', 'no');
-            },
-            add: function (event){
-                console.log(this.dao);
-                // this.dao.add({
-                //     'no': 1,
-                //     'title': '第一题'
-                // });
-            },
-            get: function(){
-                this.dao.select(1, function(data){
-                    console.log('查询结果');
-                    console.log(data);
-                });
-            }
         }
     }
 </script>
 <style>
-    .logo {
-        width: 500px;
-        height: 500px;
-        background: url(../assets/logo.png);
+    .banner {
+        width: 100%;
+        height: 100%;
+        background: url(../assets/images/bg_banner_01.png) center no-repeat;
+        background-size: 100%;
+    }
+    
+    .enter {
+        position: fixed;
+        bottom: 50px;
+        left: 50%;
+        margin-left: -100px;
+        border-radius: 5px;
+        text-align: center;
+        letter-spacing: 0.4rem;
+        height: 50px;
+        width: 200px;
+        line-height: 50px;
+        color: #fff;
+        font-size: 1.6rem;
+        background-color: rgba(255, 50, 50, 0.8);
     }
 </style>
