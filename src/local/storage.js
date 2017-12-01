@@ -78,7 +78,7 @@ let indexedDB = function(dbName, dbVersion) {
     this.tbName; //表名
     this.tbPk; //表的主键
     //打开或创建一个对象存储空间
-    this.open = (_tbName, _keyPath) => {
+    this.open = (_tbName, _keyPath, callback) => {
         this.tbName = _tbName;
         this.tbPk = _keyPath;
         this.request = this.inDB.open(this.dbName, this.dbVersion); //"practiceDB", 1
@@ -93,11 +93,14 @@ let indexedDB = function(dbName, dbVersion) {
             // 创建一个索引来通过 no 搜索客户。
             // 不会有重复的，因此使用 unique 索引。
             objectStore.createIndex(_keyPath, _keyPath, { unique: true });
+            if (callback) callback(this.db);
         };
         this.request.onsuccess = (event) => {
             console.log("成功打开DB");
             this.db = event.target.result;
+            if (callback) callback(this.db);
         };
+        return this;
     };
 
     //新增
@@ -105,10 +108,10 @@ let indexedDB = function(dbName, dbVersion) {
     this.add = (obj) => {
         let transaction = this.db.transaction([this.tbName], "readwrite");
         transaction.oncomplete = function(event) {
-            console.log("Success");
+            console.log("Add Success");
         };
         transaction.onerror = function(event) {
-            console.log("Error");
+            console.log("Add Error");
         };
         let objectStore = transaction.objectStore(this.tbName);
         objectStore.add(obj); //{ no: 1, title: '第一题' }

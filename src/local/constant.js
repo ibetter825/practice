@@ -5,4 +5,8 @@ global.DB_NAME = 'practiceDb';
 /**
  * 数据表名
  */
-global.DB_OBJECT_NAME = 'practice';
+global.TB_OBJECT_NAME = 'practice';
+/**
+ * 数据库主键
+ */
+global.TB_OBJECT_KEY = 'no';

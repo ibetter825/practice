@@ -8,6 +8,8 @@ Vue.use(VueResource)
 import App from './App.vue'
 // 引用路由配置文件
 import routes from './config/routes'
+// 引用扩展
+import extend from './local/extend'
 // 引用常量
 import constant from './local/constant'
 // 引用自定义存储方法文件
