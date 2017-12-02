@@ -9,25 +9,29 @@ export default {
   name: "app",
   data() {
     return {
-      dao: this.$indexedDB(global.DB_NAME, 1) //链接数据库
+      dao: this.$indexedDB(global.DB_NAME, global.DB_VERSION) //链接数据库
     };
   },
   created: function() {
     //数据库名称
-    console.log(this.dao);
-    this.dao.open(global.TB_OBJECT_NAME, global.TB_OBJECT_KEY, function(db) {
-      let osArr = db.objectStoreNames;
-      let flg = false;
-      for (let i = 0; i < osArr.length; i++) {
-                if (osArr[i] === global.TB_OBJECT_NAME) {
-                    flg = true;
-                    break;
-                }
-            }
-            if(flg)
-            alert('包含');
-            else
-            alert('不包含');
+    let _this = this;
+    _this.dao.open(global.TB_OBJECT_NAME, global.TB_OBJECT_KEY, function(result) {
+      let key = global.TB_PRACTICE_LIST_KEY;
+      _this.dao.select(key, function(result){
+          if(!result) {//没有list数据 
+              _this.$http.get("practice.json")
+              .then(function(response) {
+                //将所有练习题放在数据库中
+                _this.dao.add({
+                  'key': key,
+                   key: response.data
+                });
+              })
+              .catch(function(response) {
+                console.log(response);
+              });
+          }
+      });
     });
   }
 };

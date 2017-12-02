@@ -9,11 +9,13 @@
     </header>
     <section class="content">
         <section>
-            <header><span class="type">单选题</span>机动车驾驶人违法驾驶造成重大交通事故构成犯罪的，依法追究什么责任？</header>
+            <header><span class="type">{{dto.type}}</span>{{dto.title}}</header>
             <ul>
-                <li><i class="iconfont icon-default"></i>你在他乡还好吗，我在他乡很好很不好，我在他乡很好很不好,非常的不好</li>
+                <li v-for="ans in dto.answers"><i class="iconfont icon-default"></i>{{ans}}</li>
+
+                <!-- <li><i class="iconfont icon-default"></i>你在他乡还好吗，我在他乡很好很不好，我在他乡很好很不好,非常的不好</li>
                 <li><i class="iconfont icon-right"></i></li>
-                <li><i class="iconfont icon-wrong"></i></li>
+                <li><i class="iconfont icon-wrong"></i></li> -->
             </ul>
         </section>
     </section>
@@ -33,9 +35,22 @@
     module.exports = {
         data() {
             return {
-                dao: this.$indexedDB('practiceDb', 1)//链接数据库
+                dao: this.$indexedDB(global.DB_NAME, global.DB_VERSION),//链接数据库
+                dto: {}//练习题实例
             }
-        }
+        },
+        created: function() {
+    //数据库名称
+    let _this = this;
+    _this.dao.open(global.TB_OBJECT_NAME, global.TB_OBJECT_KEY, function(result) {
+      let key = global.TB_PRACTICE_LIST_KEY;
+      _this.dao.select(key, function(result){
+          if(result){
+              _this.dto = result[key][0];
+          }
+      });
+    });
+  }
     }
 </script>
 <style>
