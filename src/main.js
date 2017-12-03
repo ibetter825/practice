@@ -18,7 +18,12 @@ import storage from './local/storage'
 Object.keys(storage).forEach((key) => {
     Vue.prototype[key] = storage[key]
 });
-//引入公用组件的文件夹，文件夹里面的index.js存有所有组件的引用
+//引入自定义v-touch指令
+import vtouch from './local/vtouch'
+Object.keys(vtouch).forEach((key) => {
+        Vue.directive(`${key}`, vtouch[key])
+    })
+    //引入公用组件的文件夹，文件夹里面的index.js存有所有组件的引用
 import components from './components/'
 //遍历公用组件，存入到Vue全局实例中，这样可以不用在每个vue单文件中分别引入，直接使用就可以了
 Object.keys(components).forEach((key) => {
