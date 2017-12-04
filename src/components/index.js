@@ -8,5 +8,10 @@ export default {
     },
     'layer-mobile-loading': function(resolve) {
         require(['./layer/mobile/loading.vue'], resolve)
+    },
+
+    //practice组件
+    'practice-content': function(resolve) {
+        require(['./practice/content.vue'], resolve)
     }
 }

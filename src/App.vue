@@ -24,7 +24,7 @@ export default {
                 //将所有练习题放在数据库中
                 _this.dao.add({
                   'key': key,
-                   key: response.data
+                   'value': response.data
                 });
               })
               .catch(function(response) {

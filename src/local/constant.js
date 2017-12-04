@@ -19,9 +19,9 @@ global.TB_OBJECT_KEY = 'key';
  */
 global.TB_PRACTICE_LIST_KEY = 'list';
 /**
- * 最后一次查看的练习题编号
+ * 最后一次查看的练习题编号key
  */
-global.TB_PRACTICE_LAST_NO = 1;
+global.TB_PRACTICE_LAST_KEY = 'last_no';
 /**
  * 顺序模式 1，收藏模式 2，错题模式 3，随机模式 4
  */
