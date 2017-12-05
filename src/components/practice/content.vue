@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section v-if="show">
         <header><span class="type">{{dto.type}}</span>{{dto.title}}</header>
         <ul v-if="dto.type.match('判断') !== null">
             <li v-on:click="choose('正确', $event);" v-bind:class="[clz['正确']?clz['正确']:'']"><i v-bind:class="['iconfont', clz['正确']?('icon-' + clz['正确']):'icon-default']"></i>正确</li>
@@ -14,53 +14,38 @@
 
 <script>
 module.exports = {
-  props: ['prop'],
+  props: ["ptype", "pupdate"],
   data() {
     return {
       dao: this.$indexedDB(global.DB_NAME, global.DB_VERSION), //链接数据库
-      dto: this.prop, //练习题实例
+      type: this.ptype, //当前练习题的位置this,next,prev
+      dto: { type: "" }, //练习题实例
       clz: {},
       rcount: 0, //多选题已选择正确答案的数量
-      style: {
-        marginLeft: ""
-      }
+      show: true //是否显示出来
     };
   },
-  mounted: function() {
-    //数据库名称
-    let _this = this;
-    _this.dao.open(global.TB_OBJECT_NAME, global.TB_OBJECT_KEY, function(result) {
-      let key = global.TB_PRACTICE_LIST_KEY;
-      let lastKey = global.TB_PRACTICE_LAST_KEY;//上一次阅读的编号
-      let lastNo = 0;
-      _this.dao.select(key, function(result) {
-        if (result) {
-          _this.dao.select(lastKey, function(value){
-              if(value === undefined){
-                _this.dao.add({
-                  'key': lastKey,
-                   'value': lastNo
-                });
-              }else{
-                lastNo = Number(value);
-              }
-          });
-          _this.dto = result['value'][lastNo];
-          let ans = _this.dto.answers;
-          let type = _this.dto.type;
-          if (type.match("判断") !== null) {
-            _this.clz = {
-              正确: null,
-              错误: null
-            };
-          } else {
-            let clz = {};
-            for (let i = 0; i < ans.length; i++) clz[i + 1] = null;
-            _this.clz = clz;
+  watch: {
+    pupdate: function(update) {
+      let _this = this;
+      let lastKey = global.TB_PRACTICE_LAST_KEY;
+      _this.dao.select(lastKey, function(last) {
+        let lastNo = Number(last["value"]);
+        _this.dao.update(
+          lastKey,
+          {
+            key: lastKey,
+            value: lastNo + update.dis
+          },
+          function() {
+            _this.init();
           }
-        }
+        );
       });
-    });
+    }
+  },
+  mounted: function() {
+    this.init();
   },
   methods: {
     choose: function(index, event) {
@@ -106,6 +91,61 @@ module.exports = {
           _this.clz[right] = "right";
         }
       }
+    },
+    init: function() {
+      let _this = this;
+      _this.dao.open(global.TB_OBJECT_NAME, global.TB_OBJECT_KEY, function(
+        result
+      ) {
+        let key = global.TB_PRACTICE_LIST_KEY;
+        let lastKey = global.TB_PRACTICE_LAST_KEY; //上一次阅读的编号
+        let lastNo = 0;
+        _this.dao.select(key, function(result) {
+          if (result) {
+            _this.dao.select(lastKey, function(last) {
+              if (last === undefined) {
+                _this.dao.add({
+                  key: lastKey,
+                  value: lastNo
+                });
+              } else {
+                lastNo = Number(last["value"]);
+                if (lastNo < 0 || isNaN(lastNo)) {
+                  lastNo = 0;
+                  _this.dao.update(lastKey, {
+                    key: lastKey,
+                    value: 0
+                  });
+                }
+                if (_this.type === "next") {
+                  //下一题
+                  lastNo++;
+                } else if (_this.type === "prev") {
+                  //上一题
+                  if (lastNo <= 0) {
+                    _this.show = false;
+                    return;
+                  }
+                  lastNo--;
+                }
+              }
+              _this.dto = result["value"][lastNo];
+              let ans = _this.dto.answers;
+              let type = _this.dto.type;
+              if (type.match("判断") !== null) {
+                _this.clz = {
+                  正确: null,
+                  错误: null
+                };
+              } else {
+                let clz = {};
+                for (let i = 0; i < ans.length; i++) clz[i + 1] = null;
+                _this.clz = clz;
+              }
+            });
+          }
+        });
+      });
     }
   }
 };

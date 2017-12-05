@@ -132,7 +132,7 @@ let indexedDB = function(dbName, dbVersion) {
     }
 
     //修改
-    this.update = (key, obj) => {
+    this.update = (key, obj, callback) => {
         let transaction = this.result.transaction([this.tbName], "readwrite");
         let objectStore = transaction.objectStore(this.tbName);
         let request = objectStore.get(key); //获取该对象
@@ -141,6 +141,7 @@ let indexedDB = function(dbName, dbVersion) {
             //request.result.title = '第一题修改后';
             //objectStore.put(request.result);
             objectStore.put(obj);
+            if (callback) callback();
         };
     }
 

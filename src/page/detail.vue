@@ -9,11 +9,11 @@
     </header>
     <section class="content" v-move.self="{methods: touch}">
         <!-- 当前题 -->
-        <practice-content :prop="dto" :style="styler.nextPrac"></practice-content>
+        <practice-content :ptype="'next'" :pupdate="update" :style="styler.nextPrac"></practice-content>
         <!-- 下一题 -->
-        <practice-content :prop="dto" :style="styler.thisPrac"></practice-content>
+        <practice-content :ptype="'this'" :pupdate="update" :style="styler.thisPrac"></practice-content>
         <!-- 上一题 -->
-        <practice-content :prop="dto" :style="styler.prevPrac"></practice-content>
+        <practice-content :ptype="'prev'" :pupdate="update" :style="styler.prevPrac"></practice-content>
     </section>
     <footer class="footer">
         <ul>
@@ -31,19 +31,19 @@
 module.exports = {
   data() {
     return {
-      dao: this.$indexedDB(global.DB_NAME, global.DB_VERSION), //链接数据库
-      dto: { type: "" }, //练习题实例
-      clz: {},
-      rcount: 0, //多选题已选择正确答案的数量
+      update: {
+        count: 0,
+        dis: 0 //方向 +1还是-1
+      },
       style: {
         thisPrac: {
-          left: ''
+          left: ""
         },
         nextPrac: {
-          left: ''
+          left: ""
         },
         prevPrac: {
-          left: ''
+          left: ""
         }
       }
     };
@@ -56,10 +56,10 @@ module.exports = {
           left: _this.style.thisPrac.left + "px"
         },
         nextPrac: {
-          left: ''
+          left: ""
         },
         prevPrac: {
-          marginLeft: '-100%',
+          marginLeft: "-100%",
           left: _this.style.prevPrac.left + "px"
         }
       };
@@ -70,39 +70,71 @@ module.exports = {
       let _this = this;
       let evObj = e.evObj;
       let cx = evObj.clientX;
-      let x = evObj.distanceX;
+      let x = evObj.distanceX; //手指滑动的距离
       let moving = evObj.moving; //是否正在移动
+      let dis = "left"; //默认向左滑
       if (x < 0) {
         //向右划 上一题
         _this.style.prevPrac.left = x * -1;
+        dis = "right";
       } else {
-        //向左划下一题
+        //向左划 下一题
         _this.style.thisPrac.left = x * -1;
+        dis = "left";
       }
-      
+
       if (!moving) {
-        if (Math.abs(x) > 100) {
+        if (Math.abs(x) > 150) {
           if (x < 0) {
-            //向左划 下一题
-            alert("下一题");
+            //向右划 上一题
+            //alert("上一题");
+            _this.update = {
+              count: _this.update.count--,
+              dis: -1
+            };
           } else {
-            //向右划下一题
-            alert("上一题");
+            //向左划下一题
+            // alert("下一题");
+            _this.update = {
+              count: _this.update.count++,
+              dis: 1
+            };
           }
+          _this.move(dis, true);
         } else {
-          _this.move(); //回到原点
+          _this.move(dis); //回到原点
         }
       }
     },
-    move: function() {
+    move: function(dis, done) {
+      //left 滑动方向  done 是否成功滑动
       let _this = this;
+      let prac = dis === "left" ? "thisPrac" : "prevPrac";
+      let width = window.innerWidth;
       let _run = function() {
-        let l = _this.style.thisPrac.left;
-        if (l < -10) _this.style.thisPrac.left += 5;
-        else if (l > 10) _this.style.thisPrac.left -= 5;
-        else {
-          _this.style.thisPrac.left = 0;
-          return;
+        let l = _this.style[prac].left;
+        if (!done) {
+          if (l < -10) _this.style[prac].left += 5;
+          else if (l > 10) _this.style[prac].left -= 5;
+          else {
+            _this.style[prac].left = 0;
+            return;
+          }
+        } else {
+          //完成滑动跳入下一题或上一题
+          if (dis === "left") {
+            if (l > width * -1 - 10) _this.style[prac].left -= 5;
+            else {
+              _this.style[prac].left = width * -1;
+              return;
+            }
+          } else {
+            if (l < width + 10) _this.style[prac].left += 5;
+            else {
+              _this.style[prac].left = width;
+              return;
+            }
+          }
         }
         requestAnimationFrame(_run);
       };
