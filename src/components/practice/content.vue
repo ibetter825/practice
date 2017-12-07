@@ -28,20 +28,18 @@ module.exports = {
   watch: {
     pupdate: function(update) {
       let _this = this;
+      let lastNo = _this.$store.state.prac.last_no;
       let lastKey = global.TB_PRACTICE_LAST_KEY;
-      _this.dao.select(lastKey, function(last) {
-        let lastNo = Number(last["value"]);
-        _this.dao.update(
+       _this.dao.update(
           lastKey,
           {
             key: lastKey,
-            value: lastNo + update.dis
+            value: lastNo
           },
           function() {
             _this.init();
           }
         );
-      });
     }
   },
   mounted: function() {
@@ -94,29 +92,12 @@ module.exports = {
     },
     init: function() {
       let _this = this;
-      _this.dao.open(global.TB_OBJECT_NAME, global.TB_OBJECT_KEY, function(
-        result
-      ) {
+      _this.dao.open(global.TB_OBJECT_NAME, global.TB_OBJECT_KEY, function(result) {
         let key = global.TB_PRACTICE_LIST_KEY;
-        let lastKey = global.TB_PRACTICE_LAST_KEY; //上一次阅读的编号
-        let lastNo = 0;
+        
         _this.dao.select(key, function(result) {
+          let lastNo = _this.$store.state.prac.last_no;
           if (result) {
-            _this.dao.select(lastKey, function(last) {
-              if (last === undefined) {
-                _this.dao.add({
-                  key: lastKey,
-                  value: lastNo
-                });
-              } else {
-                lastNo = Number(last["value"]);
-                if (lastNo < 0 || isNaN(lastNo)) {
-                  lastNo = 0;
-                  _this.dao.update(lastKey, {
-                    key: lastKey,
-                    value: 0
-                  });
-                }
                 if (_this.type === "next") {
                   //下一题
                   lastNo++;
@@ -129,21 +110,19 @@ module.exports = {
                   lastNo--;
                 }
               }
-              _this.dto = result["value"][lastNo];
-              let ans = _this.dto.answers;
-              let type = _this.dto.type;
-              if (type.match("判断") !== null) {
-                _this.clz = {
-                  正确: null,
-                  错误: null
-                };
-              } else {
-                let clz = {};
-                for (let i = 0; i < ans.length; i++) clz[i + 1] = null;
-                _this.clz = clz;
-              }
-            });
-          }
+            _this.dto = result["value"][lastNo];
+            let ans = _this.dto.answers;
+            let type = _this.dto.type;
+            if (type.match("判断") !== null) {
+              _this.clz = {
+                正确: null,
+                错误: null
+              };
+            } else {
+              let clz = {};
+              for (let i = 0; i < ans.length; i++) clz[i + 1] = null;
+              _this.clz = clz;
+            }
         });
       });
     }

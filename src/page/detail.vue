@@ -9,11 +9,11 @@
     </header>
     <section class="content" v-move.self="{methods: touch}">
         <!-- 当前题 -->
-        <practice-content :ptype="'next'" :pupdate="update" :style="styler.nextPrac"></practice-content>
+        <practice-content :ptype="'next'" :pupdate="update" @reset="reset" :style="styler.nextPrac"></practice-content>
         <!-- 下一题 -->
-        <practice-content :ptype="'this'" :pupdate="update" :style="styler.thisPrac"></practice-content>
+        <practice-content :ptype="'this'" :pupdate="update" @reset="reset" :style="styler.thisPrac"></practice-content>
         <!-- 上一题 -->
-        <practice-content :ptype="'prev'" :pupdate="update" :style="styler.prevPrac"></practice-content>
+        <practice-content :ptype="'prev'" :pupdate="update" @reset="reset" :style="styler.prevPrac"></practice-content>
     </section>
     <footer class="footer">
         <ul>
@@ -85,28 +85,23 @@ module.exports = {
 
       if (!moving) {
         if (Math.abs(x) > 150) {
+          let d = 1;
           if (x < 0) {
             //向右划 上一题
             //alert("上一题");
-            _this.update = {
-              count: _this.update.count--,
-              dis: -1
-            };
-          } else {
-            //向左划下一题
-            // alert("下一题");
-            _this.update = {
-              count: _this.update.count++,
-              dis: 1
-            };
+            d = -1;
           }
+           let lastNo = _this.$store.state.prac.last_no;
+          _this.$store.dispatch("prac_last_no", lastNo + d);
+          
+         
           _this.move(dis, true);
         } else {
           _this.move(dis); //回到原点
         }
       }
     },
-    move: function(dis, done) {
+    move: function(dis, done, d) {
       //left 滑动方向  done 是否成功滑动
       let _this = this;
       let prac = dis === "left" ? "thisPrac" : "prevPrac";
@@ -126,12 +121,22 @@ module.exports = {
             if (l > width * -1 - 10) _this.style[prac].left -= 5;
             else {
               _this.style[prac].left = width * -1;
+              
+              _this.update = {
+                count: _this.update.count + 1
+              };
+              _this.reset();//复位
               return;
             }
           } else {
             if (l < width + 10) _this.style[prac].left += 5;
             else {
               _this.style[prac].left = width;
+              
+               _this.update = {
+                count: _this.update.count - 1
+              };
+              _this.reset();//复位
               return;
             }
           }
@@ -139,6 +144,20 @@ module.exports = {
         requestAnimationFrame(_run);
       };
       _run();
+    },
+    reset: function(){
+      let _this = this;
+      _this.style = {
+        thisPrac: {
+          left: 0
+        },
+        nextPrac: {
+          left: 0
+        },
+        prevPrac: {
+          left: 0
+        }
+      }
     }
   }
 };

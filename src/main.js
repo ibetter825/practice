@@ -4,7 +4,9 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
-    //入口
+    //vuex
+import store from './store/'
+//入口
 import App from './App.vue'
 // 引用路由配置文件
 import routes from './config/routes'
@@ -38,6 +40,7 @@ const router = new VueRouter({
     routes
 })
 new Vue({
+    store,
     router,
     el: '#app',
     render: h => h(App)
